@@ -52,12 +52,12 @@ ps5_url = (
     "https://direct.playstation.com/en-us/consoles/console/playstation5-console.3005816"
 )
 # cam_test_url = "https://direct.playstation.com/en-us/accessories/accessory/hd-camera.3005726"
-driver.get(ps5_url)
-
-for cookie in cookies:
-    for name, value in cookie.items():
-        print(name, value)
-        driver.add_cookie({"name": name, "value": value})
+if cookies is not None:
+    driver.get(ps5_url)
+    for cookie in cookies:
+        for name, value in cookie.items():
+            print(name, value)
+            driver.add_cookie({"name": name, "value": value})
 
 running = True
 while running:
