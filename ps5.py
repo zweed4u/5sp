@@ -3,6 +3,7 @@ import os
 import json
 import time
 import argparse
+import requests
 import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
