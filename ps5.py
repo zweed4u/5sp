@@ -16,6 +16,7 @@ class SlackRequester:
 
 
 print(f"[*] {datetime.datetime.now()} :: Parsing cli options")
+parser = argparse.ArgumentParser()
 parser.add_argument("--poll", type=int, default=60)
 args = parser.parse_args()
 poll = args.poll
