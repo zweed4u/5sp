@@ -1,3 +1,4 @@
 {
-	"slack-webhook-url": "<WEBHOOK_URL_HERE>"
+	"slack-webhook-url": "<WEBHOOK_URL_HERE>",
+	"cookies": [{"<NAME>":"<VALUE>"}, {"<NAME>":"<VALUE>"},...]
 }

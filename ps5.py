@@ -29,6 +29,7 @@ current_directory = os.path.dirname(os.path.realpath(__file__))
 with open(f"{current_directory}/config.json") as json_file:
     config_data = json.load(json_file)
 slack_webhook_url = config_data.get("webhook_url")
+cookies = config_data.get("cookies")
 slack_requester = SlackRequester(slack_webhook_url)
 
 slack_requester.send_message(
@@ -43,14 +44,21 @@ options.headless = True
 # options.add_argument("--start-maximized")
 options.add_argument("--window-size=1440x900")
 
-print(f"[*] {datetime.datetime.now()} :: Initializing webdriver")
+print(f"[*] {datetime.datetime.now()} :: Initializing webdriver - adding cookies")
 driver = webdriver.Chrome(options=options)
-driver.delete_all_cookies()
+# driver.delete_all_cookies()
 
 ps5_url = (
     "https://direct.playstation.com/en-us/consoles/console/playstation5-console.3005816"
 )
 # cam_test_url = "https://direct.playstation.com/en-us/accessories/accessory/hd-camera.3005726"
+driver.get(ps5_url)
+
+for cookie in cookies:
+    for name, value in cookie.items():
+        print(name, value)
+        driver.add_cookie({"name": name, "value": value})
+
 running = True
 while running:
     try:
@@ -58,10 +66,10 @@ while running:
         driver.get(ps5_url)
         if "queue" in driver.current_url or driver.current_url != ps5_url:
             print(
-                f"[!] {datetime.datetime.now()} :: 'queue' in url or url has redirected!"
+                f"[!] {datetime.datetime.now()} :: 'queue' in url or hardlink redirected! {ps5_url} -> {driver.current_url}"
             )
             slack_requester.send_message(
-                f"<!channel> *{datetime.datetime.now()} UTC* - 'queue' in url or hardlink redirect! - {ps5_url}"
+                f"<!channel> *{datetime.datetime.now()} UTC* - 'queue' in url or hardlink redirect! - {ps5_url} -> {driver.current_url}"
             )
         try:
             add_btn = driver.find_element_by_class_name(
